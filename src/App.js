@@ -40,10 +40,9 @@ function App() {
         </Container>
       </Navbar>
 
-
     <Switch>
 
-      <Route path="/">
+      <Route exact  path="/">
         <Carousel variant="dark" fade>
           <Carousel.Item>
             <img
@@ -99,17 +98,18 @@ function App() {
 
 
 
-      <Route path="/detail">
+      <Route  path="/detail/:id">
             <Detail shoes={shoes}/>
       </Route>
 
-      <Route path={"/:id"}>
+
+
+      <Route  path={"/:id"}>
             <div>아무거나적었을때 이거 보여주셈</div>
       </Route>
 
+
       </Switch>
-
-
 
 
 
