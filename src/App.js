@@ -5,7 +5,7 @@ import './App.css';
 import { Nav, Navbar, Container, Carousel } from 'react-bootstrap';
 import { useState } from 'react';
 import shoesData from './data.js';
-
+import Detail from './Detail.js';
 import { Link, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -33,16 +33,17 @@ function App() {
         <Container>
           <Navbar.Brand href="#home">Navbar</Navbar.Brand>
           <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link > <Link to={"/"}> Home </Link></Nav.Link>
+            <Nav.Link > <Link to={"/detail"}>  Detail</Link></Nav.Link>
             <Nav.Link href="#pricing">Pricing</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
 
 
+    <Switch>
 
-      <Route exact path="/">
+      <Route path="/">
         <Carousel variant="dark" fade>
           <Carousel.Item>
             <img
@@ -99,24 +100,14 @@ function App() {
 
 
       <Route path="/detail">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6">
-              <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
-            </div>
-            <div className="col-md-6 mt-4">
-              <h4 className="pt-5"> {shoes[0].title} </h4>
-              <p>상품설명</p>
-              <p>120000원</p>
-              <button className="btn btn-danger">주문하기</button>
-            </div>
-          </div>
-        </div>
+            <Detail shoes={shoes}/>
       </Route>
 
+      <Route path={"/:id"}>
+            <div>아무거나적었을때 이거 보여주셈</div>
+      </Route>
 
-
-
+      </Switch>
 
 
 
@@ -126,6 +117,9 @@ function App() {
     </div>
   );
 }
+
+
+
 
 
 function Card(props) {
