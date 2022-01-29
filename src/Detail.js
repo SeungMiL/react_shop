@@ -12,23 +12,19 @@ let Box = styled.div`
 
 let Title = styled.h4`
     font-size : 25px;
-    color : ${ props => props.colour };
+    color : ${props => props.colour};
 `;
 
 function Detail(props) {
 
-    useEffect(()=>{
+    // useEffect(() => {
+    //     let timer = setTimeout(() => {
 
-        let alertBox = document.querySelector('.my-alert-yellow');
-        
-        setTimeout(() => {
-            alertBox.classList.add('box-none');
-            alertBox.classList.remove('my-alert-yellow');
-            alertBox.removeChild( alertBox.childNodes[ 0 ] ); 
-            
-        }, 2000);
-        
-    });
+    //     }, 2000);
+
+    // });
+
+    // let [alert, alertTrance] = usestate(true);
 
     let { id } = useParams();
     let history = useHistory();
@@ -36,7 +32,7 @@ function Detail(props) {
         return item.id == id
     })
 
-    
+
 
     return (
         <div className="container">
@@ -45,9 +41,20 @@ function Detail(props) {
                 <Title className="red" >Detail</Title>
             </Box>
 
-            <div className="my-alert-yellow">
-                <p>재고가 얼마 남지 않았습니다</p>
-            </div>
+            {
+                alert === true
+                    ? (<div className="my-alert-yellow">
+                        <p>재고가 얼마 남지 않았습니다</p>
+                    </div>)
+                    : null
+
+            }
+
+
+
+
+
+
             <div className="row">
                 <div className="col-md-6">
                     <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
