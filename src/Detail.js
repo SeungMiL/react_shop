@@ -1,4 +1,4 @@
-import React, { useEffect, usestate } from "react";
+import React, { useEffect, useState, usestate } from "react";
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
 import './detail.scss';
@@ -15,16 +15,21 @@ let Title = styled.h4`
     color : ${props => props.colour};
 `;
 
+
+
 function Detail(props) {
 
-    // useEffect(() => {
-    //     let timer = setTimeout(() => {
+    let [alert, alertTrance] = useState(true);
+    let [inputData, inputDataTrance] = useState('');
 
-    //     }, 2000);
+    useEffect(()=>{
+        let timmer = setTimeout(() => {
+           alertTrance(false) 
+        }, 2000);
+        console.log('hi')
+    },[alert]);
 
-    // });
-
-    // let [alert, alertTrance] = usestate(true);
+    
 
     let { id } = useParams();
     let history = useHistory();
@@ -40,6 +45,9 @@ function Detail(props) {
             <Box>
                 <Title className="red" >Detail</Title>
             </Box>
+
+            {inputData}
+            <input onChange={(e)=>{inputDataTrance(e.target.value)}}></input>
 
             {
                 alert === true
@@ -63,7 +71,11 @@ function Detail(props) {
                     <h4 className="pt-5"> {findItem.title} </h4>
                     <p>{findItem.content}</p>
                     <p>{findItem.price}원</p>
-                    <button className="btn btn-danger">주문하기</button>
+                    
+                    <Info storage = {props.storage}></Info>
+
+
+                    <button className="btn btn-danger" onClick={()=>{props.storageTrance([9,11,12])}}>주문하기</button>
                     <button className="btn btn-danger" onClick={() => {
                         history.goBack();
                     }}>뒤로가기</button>
@@ -73,5 +85,11 @@ function Detail(props) {
     )
 }
 
+
+function Info(props){
+    return (
+        <p>재고 : {props.storage[0]}</p>
+    )
+}
 
 export default Detail;

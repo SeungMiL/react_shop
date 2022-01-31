@@ -3,15 +3,19 @@
 import logo from './logo.svg';
 import './App.css';
 import { Nav, Navbar, Container, Carousel } from 'react-bootstrap';
-import { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import shoesData from './data.js';
 import Detail from './Detail.js';
 import { Link, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 
+let storageContext = React.createContext();
+
 function App() {
 
   let [shoes, shoesChange] = useState(shoesData);
+  let [storage,storageTrance] = useState([10,11,12])
+
 
   function abc() {
     let arrayNew = [];
@@ -27,9 +31,12 @@ function App() {
     return arrayNew
   }
 
-  return (
-    <div className="App">
+  
 
+  return (
+    
+    <div className="App">
+      
       <Navbar bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="#home">Navbar</Navbar.Brand>
@@ -52,7 +59,7 @@ function App() {
               alt="First slide"
             />
             <Carousel.Caption>
-              <h3>First slide label</h3>
+              <h3 >First slide label</h3>
               <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
             </Carousel.Caption>
           </Carousel.Item>
@@ -83,6 +90,9 @@ function App() {
         </Carousel>
 
         <div className="container">
+
+          <storageContext.Provider value={storage}>
+
           <div className="row">
             {abc()}
             {
@@ -92,18 +102,21 @@ function App() {
                 )
               })
             }
-
           </div>
+
+          </storageContext.Provider>
+
           <button className="btn btn-primary" onClick={
             () => {
+              
               axios.get('https://codingapple1.github.io/shop/data2.json')
               .then((result)=>{
-                console.log(result.data)
+                console.log(result.data);
+                shoesChange([...shoes, ...result.data]);
               })
               .catch(()=>{
                 console.log('실패했어요')
-              })
-              ;
+              });
             }
           }>더보기</button>
         </div>
@@ -112,7 +125,7 @@ function App() {
 
 
       <Route  path="/detail/:id">
-            <Detail shoes={shoes}/>
+            <Detail shoes={shoes} storage={storage} storageTrance={storageTrance}/>
       </Route>
 
 
@@ -136,15 +149,25 @@ function App() {
 
 
 function Card(props) {
+
+  let storage = useContext(storageContext);
+
   return (
     <div className="col-md-4">
       <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"} width="100%" />
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.content} & {props.shoes.price}</p>
+      <p>재고 : {storage[props.i]}</p>
+      <Test></Test>
     </div>
   )
 }
 
+function Test(){
+  let storage = useContext(storageContext);
+
+  return <p>재고 : {storage[0]}</p>
+}
 
 
 export default App;
