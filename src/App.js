@@ -8,6 +8,8 @@ import shoesData from './data.js';
 import Detail from './Detail.js';
 import { Link, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+import Cart from './cart';
+
 
 let storageContext = React.createContext();
 
@@ -128,9 +130,13 @@ function App() {
             <Detail shoes={shoes} storage={storage} storageTrance={storageTrance}/>
       </Route>
 
+      <Route path="/cart">
+          <Cart></Cart>
+      </Route>
 
 
-      <Route  path={"/:id"}>
+
+      <Route  path="/:id">
             <div>아무거나적었을때 이거 보여주셈</div>
       </Route>
 

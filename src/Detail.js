@@ -1,6 +1,9 @@
 import React, { useEffect, useState, usestate } from "react";
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import styled from "styled-components";
+import { CSSTransition } from "react-transition-group";
+import { Nav } from 'react-bootstrap';
+
 import './detail.scss';
 
 
@@ -21,15 +24,18 @@ function Detail(props) {
 
     let [alert, alertTrance] = useState(true);
     let [inputData, inputDataTrance] = useState('');
+    let [tab, setTab] = useState(0);
+    let [switche, setswitche] = useState(false);
 
-    useEffect(()=>{
+    useEffect(() => {
         let timmer = setTimeout(() => {
-           alertTrance(false) 
+            alertTrance(false)
         }, 2000);
-        console.log('hi')
-    },[alert]);
+        console.log('hi');
+        return () => { clearTimeout(timmer) }
+    }, []);
 
-    
+
 
     let { id } = useParams();
     let history = useHistory();
@@ -47,7 +53,7 @@ function Detail(props) {
             </Box>
 
             {inputData}
-            <input onChange={(e)=>{inputDataTrance(e.target.value)}}></input>
+            <input onChange={(e) => { inputDataTrance(e.target.value) }}></input>
 
             {
                 alert === true
@@ -71,22 +77,60 @@ function Detail(props) {
                     <h4 className="pt-5"> {findItem.title} </h4>
                     <p>{findItem.content}</p>
                     <p>{findItem.price}원</p>
-                    
-                    <Info storage = {props.storage}></Info>
+
+                    <Info storage={props.storage}></Info>
 
 
-                    <button className="btn btn-danger" onClick={()=>{props.storageTrance([9,11,12])}}>주문하기</button>
+                    <button className="btn btn-danger" onClick={() => { props.storageTrance([9, 11, 12]) }}>주문하기</button>
                     <button className="btn btn-danger" onClick={() => {
                         history.goBack();
                     }}>뒤로가기</button>
                 </div>
             </div>
+
+
+            <div>
+                <Nav className="mt-5" variant="tabs" defaultActiveKey="link-0">
+                    <Nav.Item>
+                        <Nav.Link eventKey="link-0" onClick={() => { setswitche(false); setTab(0) }}>Active</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="link-1" onClick={() => { setswitche(false); setTab(1) }}>Option 2</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link eventKey="link-2" onClick={() => { setswitche(false); setTab(2) }}>Option 3</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+            </div>
+            <CSSTransition in={switche} classNames="wow" timeout={500}>
+                <TabContent tab={tab} setswitche={setswitche} />
+            </CSSTransition>
+
         </div>
     )
 }
 
 
-function Info(props){
+function TabContent(props) {
+
+    useEffect(() => {
+        props.setswitche(true);
+    })
+
+
+    if (props.tab == 0) {
+        return <div>0번째 내용입니다</div>
+    } else if (props.tab == 1) {
+        return <div>1번째 내용입니다</div>
+    } else if (props.tab == 2) {
+        return <div>2번째 내용입니다</div>
+    }
+}
+
+
+
+
+function Info(props) {
     return (
         <p>재고 : {props.storage[0]}</p>
     )
