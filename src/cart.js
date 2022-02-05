@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Table } from 'react-bootstrap';
 import { connect } from "react-redux";
 
 function Cart(props) {
+
+    let [modalToggle, setmodalToggle] = useState(true);
+
     return (
 
         <div>
@@ -28,8 +31,22 @@ function Cart(props) {
                         )
                     })
                 }
-
             </Table>
+            {props.state2 === true
+                ? <div className="my-alert2">
+                    <p>지금 구매하시면 신규할인 20%</p>
+                    <button onClick={() => { props.dispatch({ type: '모달창닫기' }) }}>닫기</button>
+                </div>
+                : null
+            }
+            {modalToggle === true
+                ? <div className="my-alert2">
+                    <p>지금 구매하시면 신규할인 20%</p>
+                    <button onClick={() => { setmodalToggle(false) }}>닫기</button>
+                </div>
+                : null
+            }
+
         </div>
 
     )
@@ -37,7 +54,8 @@ function Cart(props) {
 
 function Exam(state) {
     return {
-        state: state
+        state: state.reducer,
+        state2: state.reducer2,
     }
 }
 

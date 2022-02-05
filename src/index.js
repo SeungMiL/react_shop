@@ -6,7 +6,25 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
+import { combineReducers, createStore } from 'redux';
+
+
+
+let alertValue = true;
+
+function reducer2(state = alertValue, action){
+  if(action.type ==='모달창닫기'){
+    state = false;
+    return state;
+  }
+
+
+  return state
+}
+
+
+
+
 
 
 
@@ -37,7 +55,7 @@ function reducer(state = basicValue, action) {
   }
 };
 
-let store = createStore(reducer);
+let store = createStore(combineReducers({reducer, reducer2}))
 
 
 ReactDOM.render(
