@@ -7,13 +7,14 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
+import { Collapse } from 'bootstrap';
 
 
 
 let alertValue = true;
 
-function reducer2(state = alertValue, action){
-  if(action.type ==='모달창닫기'){
+function reducer2(state = alertValue, action) {
+  if (action.type === '모달창닫기') {
     state = false;
     return state;
   }
@@ -25,27 +26,42 @@ function reducer2(state = alertValue, action){
 
 
 
-
-
-
 let basicValue = [
   { id: 0, name: '멋진신발', quan: 2 },
   { id: 1, name: '멋진신발2', quan: 3 },
 ];
 
 function reducer(state = basicValue, action) {
-  if (action.type === '수량증가') {
+
+  if (action.type === '항목추가') {
+
+    let found = state.findIndex((a)=>{ return a.id === action.payload.id})
+
+    if( found >= 0){
+
+      let copy = [...state];
+      copy[found].quan++;
+      return copy;
+
+    } else {
+      let copy = [...state];
+      copy.push(action.payload);
+      return copy;
+    }
+
+
+  } else if (action.type === '수량증가') {
     let copy = [...state]
-    copy[0].quan++;
+    copy[action.payload].quan++;
     return copy
   } else if (action.type === '수량감소') {
 
     let copy = [...state]
-    if(copy[0].quan > 0){
-      copy[0].quan--;
+    if (copy[action.payload].quan > 0) {
+      copy[action.payload].quan--;
     }
     return copy
-    
+
 
     // let copy = [...state]
     // copy[0].quan--;
@@ -55,7 +71,7 @@ function reducer(state = basicValue, action) {
   }
 };
 
-let store = createStore(combineReducers({reducer, reducer2}))
+let store = createStore(combineReducers({ reducer, reducer2 }))
 
 
 ReactDOM.render(

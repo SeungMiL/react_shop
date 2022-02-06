@@ -9,6 +9,7 @@ import Detail from './Detail.js';
 import { Link, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Cart from './cart';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 let storageContext = React.createContext();
@@ -157,9 +158,10 @@ function App() {
 function Card(props) {
 
   let storage = useContext(storageContext);
+  let history = useHistory();
 
   return (
-    <div className="col-md-4">
+    <div className="col-md-4" onClick={()=>{ history.push('/detail/' + props.shoes.id)}}>
       <img src={"https://codingapple1.github.io/shop/shoes" + (props.i + 1) + ".jpg"} width="100%" />
       <h4>{props.shoes.title}</h4>
       <p>{props.shoes.content} & {props.shoes.price}</p>

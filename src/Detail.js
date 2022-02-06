@@ -5,6 +5,7 @@ import { CSSTransition } from "react-transition-group";
 import { Nav } from 'react-bootstrap';
 
 import './detail.scss';
+import { connect } from "react-redux";
 
 
 
@@ -81,7 +82,12 @@ function Detail(props) {
                     <Info storage={props.storage}></Info>
 
 
-                    <button className="btn btn-danger" onClick={() => { props.storageTrance([9, 11, 12]) }}>주문하기</button>
+                    <button className="btn btn-danger" onClick={() => { 
+                        
+                        props.storageTrance([9, 11, 12]);
+                        props.dispatch({type : '항목추가', payload : {id : findItem.id, name : findItem.title , quan : 1}});
+                        history.push('/cart');
+                     }}>주문하기</button>
                     <button className="btn btn-danger" onClick={() => {
                         history.goBack();
                     }}>뒤로가기</button>
@@ -136,4 +142,12 @@ function Info(props) {
     )
 }
 
-export default Detail;
+
+function Exam(state) {
+    return {
+        state: state.reducer,
+        state2: state.reducer2,
+    }
+}
+
+export default connect(Exam)(Detail)
