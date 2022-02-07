@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { Table } from 'react-bootstrap';
 import { connect, useDispatch, useSelector } from "react-redux";
 
 function Cart(props) {
 
     let [modalToggle, setmodalToggle] = useState(true);
-    
-    let state = useSelector((state)=>state);
+
+    let state = useSelector((state) => state);
     console.log(state.reducer);
 
     let dispatch = useDispatch();
@@ -29,8 +29,8 @@ function Cart(props) {
                                 <td>{a.id}</td>
                                 <td>{a.name}</td>
                                 <td>{a.quan}</td>
-                                <td><button onClick={() => { dispatch({ type: '수량증가', payload : a.id }) }}>+</button>
-                                    <button onClick={() => { dispatch({ type: '수량감소', payload : a.id}) }}>-</button>
+                                <td><button onClick={() => { dispatch({ type: '수량증가', payload: a.id }) }}>+</button>
+                                    <button onClick={() => { dispatch({ type: '수량감소', payload: a.id }) }}>-</button>
                                 </td>
                             </tr>
                         )
@@ -51,7 +51,7 @@ function Cart(props) {
                 </div>
                 : null
             }
-
+            <Parent name="승민" age="29"></Parent>
         </div>
 
     )
@@ -63,6 +63,24 @@ function Exam(state) {
         state2: state.reducer2,
     }
 }
+
+function Parent(props) {
+    return (
+        <div>
+            <Child1 name={props.name}></Child1>
+            <Child2 age={props.age}></Child2>
+        </div>
+    )
+}
+
+function Child1(props) {
+    useEffect(() => { console.log('렌더링됨1') });
+    return <div>1111</div>
+}
+let Child2 = memo(function(){
+    useEffect(() => { console.log('렌더링됨2') });
+    return <div>2222</div>
+});
 
 export default connect(Exam)(Cart)
 
