@@ -42,7 +42,19 @@ function Detail(props) {
     let history = useHistory();
     let findItem = props.shoes.find(function (item) {
         return item.id == id
-    })
+    });
+
+    useEffect(() => {
+        let arr = localStorage.getItem('watched');
+        if(arr == null){ arr = []} else {arr = JSON.parse(arr)};
+    
+        arr.push(id);
+        arr = new Set(arr);
+        arr = [...arr];
+
+        localStorage.setItem('watched', JSON.stringify(arr));
+    
+    }, []);
 
 
 
@@ -82,12 +94,12 @@ function Detail(props) {
                     <Info storage={props.storage}></Info>
 
 
-                    <button className="btn btn-danger" onClick={() => { 
-                        
+                    <button className="btn btn-danger" onClick={() => {
+
                         props.storageTrance([9, 11, 12]);
-                        props.dispatch({type : '항목추가', payload : {id : findItem.id, name : findItem.title , quan : 1}});
+                        props.dispatch({ type: '항목추가', payload: { id: findItem.id, name: findItem.title, quan: 1 } });
                         history.push('/cart');
-                     }}>주문하기</button>
+                    }}>주문하기</button>
                     <button className="btn btn-danger" onClick={() => {
                         history.goBack();
                     }}>뒤로가기</button>
@@ -149,5 +161,10 @@ function Exam(state) {
         state2: state.reducer2,
     }
 }
+
+
+
+
+
 
 export default connect(Exam)(Detail)
